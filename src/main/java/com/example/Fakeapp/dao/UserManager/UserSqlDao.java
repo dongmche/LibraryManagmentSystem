@@ -177,8 +177,8 @@ public class UserSqlDao implements UserDao {
 
 
     @Override
-    public boolean edit(java.lang.String username, User user) {
-            java.lang.String sql = "UPDATE users SET id = ?, password = ?, gmail = ? WHERE username = ?";
+    public boolean edit(String username, User user) {
+            String sql = "UPDATE users SET id = ?, password = ?, gmail = ?, username = ? WHERE username = ?";
 
             try (Connection conn = DatabaseConnection.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -187,7 +187,8 @@ public class UserSqlDao implements UserDao {
                 stmt.setLong(1, user.getId());
                 stmt.setString(2, user.getPassword());
                 stmt.setString(3, user.getGmail());
-                stmt.setString(4, username);
+                stmt.setString(4, user.getName());
+                stmt.setString(5, username);
 
                 int rowsAffected = stmt.executeUpdate();
 

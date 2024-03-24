@@ -51,12 +51,12 @@
           <tr>
             <th scope="row">${status.index + 1}</th>
             <td>
-                <form class="form-inline">
+                <form class="form-inline" action="/user/edit/${user.name}" method="post">
                  <label class="sr-only" for="inlineFormInputName2">Name</label>
                  <input type="text" class="form-control mb-2 mr-sm-2" id="name" name="username" value=${user.name}>
                  <input type="text" class="form-control mb-2 mr-sm-2" id="gmail" name="gmail" value=${user.gmail}>
                  <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
-                 <button type="submit" class="btn btn-primary mb-2 me-2">edit</button>
+                 <button type="submit" class="btn btn-primary mb-2 me-2">Edit</button>
                  <a href="/user/delete/${user.name}" class="btn btn-primary mb-2 me-2">Delete</a>
                </form>
             </td>

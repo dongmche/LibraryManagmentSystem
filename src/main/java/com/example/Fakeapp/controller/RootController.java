@@ -64,11 +64,12 @@ public class RootController {
 
 
     // currently do not works
-    @GetMapping("/user/edit/{username}")
+    @PostMapping("/user/edit/{username}")
     public String editUserByName(@PathVariable("username") String username,
                                  @RequestParam("username") String newUsername,
                                  @RequestParam("gmail") String gmail) {
 
+        System.out.println("in this route");
         User user = userDao.findByUsername(username);
         user.setName(newUsername);
         user.setGmail(gmail);
