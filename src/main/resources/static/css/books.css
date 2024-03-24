@@ -1,0 +1,15 @@
+body{
+    margin: 0;
+    padding: 20px;
+    background-color: #333; /* Dark background */
+    color: #fff; /* Light text color for contrast */
+    font-family: Arial, sans-serif;
+}
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensures navbar stays on top of other content */
+
+}
+
+
