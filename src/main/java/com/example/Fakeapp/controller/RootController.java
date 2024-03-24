@@ -62,8 +62,6 @@ public class RootController {
         return "redirect:/root/users"; // Redirect to a list of users after deletion
     }
 
-
-    // currently do not works
     @PostMapping("/user/edit/{username}")
     public String editUserByName(@PathVariable("username") String username,
                                  @RequestParam("username") String newUsername,
