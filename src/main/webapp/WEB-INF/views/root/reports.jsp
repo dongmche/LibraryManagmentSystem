@@ -11,7 +11,7 @@
 </head>
 <body style="background-color: #333;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Books</a>
+      <a class="navbar-brand" href="#">Admin</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -19,14 +19,23 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/books">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/root/users">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/root/create/user">Create user</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/root/create/book">add book</a>
+          </li>
+          <li class="nav-item active">
+                <a class="nav-link" href="/root/overdue/books">overdue books <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
                                         <a class="nav-link" href="/logout">logout <span class="sr-only">(current)</span></a>
            </li>
         </ul>
-        <form action="/search" method="get" class="form-inline my-2 my-lg-0" >
-          <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search book or author" aria-label="Search">
+        <form action="/root/search/user" method="get" class="form-inline my-2 my-lg-0" >
+          <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search user" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
@@ -34,29 +43,23 @@
 
 
     <table class="table table-bordered table-dark">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Title</th>
-          <th scope="col">Author</th>
-          <th scope="col">ISBN</th>
-          <th scope="col">availability</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <c:forEach var="book" items="${books}" varStatus="status">
-          <tr>
-            <th scope="row">${status.index + 1}</th>
-            <td><a href="/book/${book.ISBN}"> ${book.title}</td>
-            <td>${book.author}</td>
-            <td>${book.ISBN}</td>
-            <td>
-           </td>
-          </tr>
-        </c:forEach>
-
-      </tbody>
-    </table>
+            <thead>
+                <tr>
+                    <th scope="col">user id</th>
+                    <th scope="col">report date</th>
+                    <th scope="col">status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="report" items="${reports}" varStatus="status">
+                    <tr>
+                        <td>${report.user}</td>
+                        <td>${report.date}</td>
+                        <td>${report.status}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
 
 
 </body>

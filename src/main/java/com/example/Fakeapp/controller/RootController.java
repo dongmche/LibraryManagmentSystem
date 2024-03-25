@@ -1,5 +1,7 @@
 package com.example.Fakeapp.controller;
 
+import com.example.Fakeapp.dao.ReportManager.Report;
+import com.example.Fakeapp.dao.ReportManager.ReportManagerDao;
 import com.example.Fakeapp.dao.UserManager.User;
 import com.example.Fakeapp.dao.UserManager.UserDao;
 import com.example.Fakeapp.dao.bookManager.Book;
@@ -23,6 +25,9 @@ public class RootController {
     private UserDao userDao;
     @Autowired
     private BookManagerDao bookManagerDao;
+
+    @Autowired
+    private ReportManagerDao reportManagerDao;
 
     @GetMapping("/root/login")
     public ModelAndView longInRoot(){
@@ -147,9 +152,14 @@ public class RootController {
     }
     @GetMapping("/root/overdue/books")
     public ModelAndView getOverdueBooks(){
-        ArrayList<Book> overdueBooks = bookManagerDao.getOverdueBooks(today());
+
+        // must change this one
+        ArrayList<Book> overdueBooks = bookManagerDao.getAll();
+
+
         ModelAndView ret = new ModelAndView("root/books");
         ret.addObject("books", overdueBooks);
+
         return new ModelAndView("root/books");
     }
 
@@ -159,6 +169,15 @@ public class RootController {
 
         ModelAndView ret = new ModelAndView("root/home");
         ret.addObject("users", users);
+        return ret;
+    }
+
+    @GetMapping("/root/reports")
+    public ModelAndView getReports(){
+        ArrayList<Report> reports = reportManagerDao.getAll();
+
+        ModelAndView ret = new ModelAndView("root/reports");
+        ret.addObject("reports", reports);
         return ret;
     }
 }
