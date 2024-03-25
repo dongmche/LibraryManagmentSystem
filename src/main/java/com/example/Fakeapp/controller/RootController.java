@@ -34,10 +34,11 @@ public class RootController {
     public ModelAndView login(@RequestParam("username") java.lang.String username,
                               @RequestParam("password") java.lang.String password,
                               HttpSession session) {
+        System.out.println("catched byy root login");
         User user = userDao.findByUsername(username);
 
         if (user == null || user.getId() > 1000 || !user.compareUnhashed(password)) {
-            ModelAndView res = new ModelAndView("root");
+            ModelAndView res = new ModelAndView("/root/login");
             res.addObject("message", "Either password or username is incorrect");
             return res;
         }
@@ -153,11 +154,11 @@ public class RootController {
     }
 
     @GetMapping("/root/search/user")
-    public ModelAndView searchUser( @RequestParam("username") String username){
-        User user = userDao.findByUsername(username);
+    public ModelAndView searchUser( @RequestParam("query") String query){
+        ArrayList<User> users = userDao.search(query);
 
-        ModelAndView ret = new ModelAndView("root/books");
-//        ret.addObject("books", overdueBooks);
-        return new ModelAndView("root/books");
+        ModelAndView ret = new ModelAndView("root/home");
+        ret.addObject("users", users);
+        return ret;
     }
 }
