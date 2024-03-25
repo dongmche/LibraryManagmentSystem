@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 @Controller
 public class RootController {
 
-    private static final String GMAIL_SHOULD_RETURN_BOOK_TEXT = "please return a borrowed book";
+    private static final String GMAIL_SHOULD_RETURN_BOOK_TEXT = "please return a borrowed book : ";
     private static final String GMAIL_SHOULD_RETURN_BOOK_SUBJECT = "unreturned book";
     @Autowired
     private UserDao userDao;
@@ -187,11 +187,12 @@ public class RootController {
         ret.addObject("reports", reports);
         return ret;
     }
-    @GetMapping("/root/notify/{ownerId}")
-    public ModelAndView notifyOwner(@PathVariable("ownerId") Long ownerId) {
+    @GetMapping("/root/notify/{ownerId}/{isbn}")
+    public ModelAndView notifyOwner(@PathVariable("ownerId") Long ownerId,  @PathVariable("isbn") Long isbn) {
         taskExecutor.execute(() -> {
+            Book book = bookManagerDao.get(isbn);
             User user = userDao.findById(ownerId);
-            emailService.sendMessage(user.getGmail(), GMAIL_SHOULD_RETURN_BOOK_SUBJECT, GMAIL_SHOULD_RETURN_BOOK_TEXT);
+            emailService.sendMessage(user.getGmail(), GMAIL_SHOULD_RETURN_BOOK_SUBJECT, GMAIL_SHOULD_RETURN_BOOK_TEXT + book.getTitle());
         });
 
         return new ModelAndView("redirect:/root/overdue/books");

@@ -73,7 +73,7 @@
                                         available
                                    </c:when>
                                    <c:otherwise>
-                                       <a href="/root/notify/${item.owner}">Notify</a>
+                                       <a href="/root/notify/${item.owner}/${item.ISBN}">Notify</a>
                                    </c:otherwise>
                                </c:choose>
                            </td>
