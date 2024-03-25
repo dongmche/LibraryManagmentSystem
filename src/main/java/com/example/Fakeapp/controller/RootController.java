@@ -30,7 +30,7 @@ public class RootController {
         return ret;
     }
 
-    @PostMapping("root/login")
+    @PostMapping("/root/login")
     public ModelAndView login(@RequestParam("username") java.lang.String username,
                               @RequestParam("password") java.lang.String password,
                               HttpSession session) {
@@ -42,8 +42,9 @@ public class RootController {
             return res;
         }
 
-        ModelAndView ret = new ModelAndView("root/home");
+
         session.setAttribute("userId", user.getId());
+        ModelAndView ret = new ModelAndView("redirect:/root/users");
         return ret;
     }
 

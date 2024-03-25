@@ -9,22 +9,21 @@ import javax.servlet.http.HttpServletResponse;
 import static com.example.Fakeapp.Statics.Statics.UNPRIVILEGED_USERS_STARTING_ID;
 
 @Component
-public class AuthInterceptor implements HandlerInterceptor {
+public class RootInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest req,
                              HttpServletResponse resp,
                              Object handler) throws Exception {
-
-
         if (req.getSession().getAttribute("userId") != null) {
             Long id = (Long) req.getSession().getAttribute("userId");
-            if (id >= UNPRIVILEGED_USERS_STARTING_ID){
+            if (id < UNPRIVILEGED_USERS_STARTING_ID){
                 return true;
             }
         }
 
-        resp.sendRedirect("/login");
+        resp.sendRedirect("/root/login");
         return false;
     }
+
 }

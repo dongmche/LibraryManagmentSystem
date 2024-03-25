@@ -33,7 +33,7 @@ public class LoginController {
                               @RequestParam("password") String password,
                               HttpSession session) {
 
-
+        System.out.println("catche here login");
         User user = userDao.findByUsername(username);
 
         if (user == null || !user.compareUnhashed(password)) {
