@@ -142,7 +142,7 @@ public class testUserDao {
     }
 
     @Test
-    public void testFindById(){
+    public void testFindByIdAndSearch(){
         User user1 = new User("giorgi1", "mche", "gio@gmail.com");
         User user2 = new User("giogi2", "mche", "gio2@gmail.com");
         User user3 = new User("giorg3", "mche", "gio3@gmail.com");
@@ -162,6 +162,15 @@ public class testUserDao {
         assert user1 != null;
         assert user2 != null;
         assert user3 != null;
+
+
+        // search test
+        ArrayList<User> users = userDao.search("g");
+        assert users.size() == 3;
+        assert 1 == userDao.search("gio@gmail.com").size();
+        assert 1 == userDao.search("gio@").size();
+        assert 1 == userDao.search("gio2@").size();
+
 
         User one = userDao.findById(user1.getId());
         User two = userDao.findById(user2.getId());

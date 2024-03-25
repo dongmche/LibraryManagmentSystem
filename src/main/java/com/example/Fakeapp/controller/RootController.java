@@ -24,7 +24,7 @@ public class RootController {
     @Autowired
     private BookManagerDao bookManagerDao;
 
-    @GetMapping("root/login")
+    @GetMapping("/root/login")
     public ModelAndView longInRoot(){
         ModelAndView ret = new ModelAndView("root/login");
         return ret;
@@ -152,4 +152,12 @@ public class RootController {
         return new ModelAndView("root/books");
     }
 
+    @GetMapping("/root/search/user")
+    public ModelAndView searchUser( @RequestParam("username") String username){
+        User user = userDao.findByUsername(username);
+
+        ModelAndView ret = new ModelAndView("root/books");
+//        ret.addObject("books", overdueBooks);
+        return new ModelAndView("root/books");
+    }
 }

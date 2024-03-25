@@ -34,8 +34,8 @@
                                         <a class="nav-link" href="/logout">logout <span class="sr-only">(current)</span></a>
            </li>
         </ul>
-        <form action="root/search/user" method="get" class="form-inline my-2 my-lg-0" >
-          <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search user" aria-label="Search">
+        <form action="/root/search/user" method="get" class="form-inline my-2 my-lg-0" >
+          <input class="form-control mr-sm-2" name="username" type="search" placeholder="Search user" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>

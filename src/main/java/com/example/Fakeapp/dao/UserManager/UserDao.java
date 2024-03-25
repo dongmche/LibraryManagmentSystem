@@ -1,5 +1,7 @@
 package com.example.Fakeapp.dao.UserManager;
 
+import com.example.Fakeapp.dao.bookManager.Book;
+
 import java.util.ArrayList;
 
 public interface UserDao {
@@ -15,6 +17,6 @@ public interface UserDao {
     public boolean delete(String username);
     public boolean edit(String username, User user);
 
-
+    public ArrayList<User> search(String query);
     public ArrayList<User> getAll();
 }

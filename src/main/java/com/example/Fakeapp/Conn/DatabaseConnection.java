@@ -6,14 +6,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static com.example.Fakeapp.Statics.Statics.*;
+
 @Component
 public class DatabaseConnection {
-    private static final String url = "jdbc:mysql://localhost:3306/library";
-    private static final String user = "root";
-    private static final String password = "a2a3b2b3"; // Your database password
+
     public static Connection getConnection() {
         try {
-            Connection conn = DriverManager.getConnection(url, user, password);
+            Connection conn = DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
             if (conn != null) {
                 // System.out.println("Connected to the database!");
                 return conn;

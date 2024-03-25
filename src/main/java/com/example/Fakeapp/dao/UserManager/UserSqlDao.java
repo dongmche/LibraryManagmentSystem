@@ -1,12 +1,10 @@
 package com.example.Fakeapp.dao.UserManager;
 
 import com.example.Fakeapp.Conn.DatabaseConnection;
+import com.example.Fakeapp.dao.bookManager.Book;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -199,6 +197,38 @@ public class UserSqlDao implements UserDao {
             }
         }
 
+    @Override
+    public ArrayList<User> search(String query) {
+        ArrayList<User> users = new ArrayList<>(); // Array to hold Book objects
+
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+
+            String sql = "SELECT * FROM users WHERE gmail LIKE ? OR username LIKE ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // Set the parameters to include the '%' wildcard for partial matches
+            pstmt.setString(1, "%" + query + "%");
+            pstmt.setString(2, "%" + query + "%");
+
+            ResultSet resultSet = pstmt.executeQuery(); // Use pstmt to execute the query
+
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getLong("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("gmail")
+                );
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return users;
+    }
 
 
     @Override
@@ -212,7 +242,6 @@ public class UserSqlDao implements UserDao {
 
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                // Assuming User class has a constructor that matches the order and types of these fields
                 User user = new User(
                         resultSet.getLong("id"),
                         resultSet.getString("username"),
