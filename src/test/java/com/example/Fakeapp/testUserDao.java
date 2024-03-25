@@ -25,7 +25,7 @@ public class testUserDao {
                 "gmail VARCHAR(50) NOT NULL UNIQUE, " +
                 "UNIQUE (gmail)" +
                 ");";
-        java.lang.String alterTable = "ALTER TABLE users AUTO_INCREMENT = 1000;";
+        String  alterTable = "ALTER TABLE users AUTO_INCREMENT = 1000;";
 
         try {
             // Establishing a connection to the database

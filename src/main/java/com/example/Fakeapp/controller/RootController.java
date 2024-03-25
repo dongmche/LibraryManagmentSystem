@@ -162,8 +162,7 @@ public class RootController {
     @GetMapping("/root/overdue/books")
     public ModelAndView getOverdueBooks(){
 
-        // must change this one
-//        ArrayList<Report> reports = reportManagerDao.getAll();
+        // must change this one to return getOverdue books
         ArrayList<Book>items = bookManagerDao.getAll();
         ModelAndView ret = new ModelAndView("root/books");
         ret.addObject("items", items);
@@ -194,7 +193,6 @@ public class RootController {
             User user = userDao.findById(ownerId);
             emailService.sendMessage(user.getGmail(), GMAIL_SHOULD_RETURN_BOOK_SUBJECT, GMAIL_SHOULD_RETURN_BOOK_TEXT + book.getTitle());
         });
-
         return new ModelAndView("redirect:/root/overdue/books");
     }
 }

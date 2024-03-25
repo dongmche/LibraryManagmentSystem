@@ -69,7 +69,7 @@
                           </td>
                            <td>
                                <c:choose>
-                                   <c:when test="${item.owner == null}">
+                                   <c:when test="${item.dueDate == null}">
                                         available
                                    </c:when>
                                    <c:otherwise>

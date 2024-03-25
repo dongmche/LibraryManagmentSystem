@@ -29,3 +29,5 @@ CREATE TABLE books (
     dueDate DATE,
     owner BIGINT
 );
+
+ALTER TABLE books AUTO_INCREMENT = 1000;
