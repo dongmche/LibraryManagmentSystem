@@ -11,7 +11,7 @@
 </head>
 <body style="background-color: #333;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Admin</a>
+      <a class="navbar-brand" href="#">Books</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -21,21 +21,12 @@
           <li class="nav-item active">
             <a class="nav-link" href="/books">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/root/create/user">Create user</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/root/create/book">add book</a>
-          </li>
-          <li class="nav-item active">
-                <a class="nav-link" href="/root/overdue/books">overdue books <span class="sr-only">(current)</span></a>
-          </li>
           <li class="nav-item active">
                                         <a class="nav-link" href="/logout">logout <span class="sr-only">(current)</span></a>
            </li>
         </ul>
-        <form action="root/search/user" method="get" class="form-inline my-2 my-lg-0" >
-          <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search user" aria-label="Search">
+        <form action="/search" method="get" class="form-inline my-2 my-lg-0" >
+          <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search book or author" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
@@ -46,23 +37,36 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">User</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">ISBN</th>
+          <th scope="col">availability</th>
         </tr>
       </thead>
       <tbody id="tableBody">
-        <c:forEach var="user" items="${users}" varStatus="status">
+        <c:forEach var="book" items="${books}" varStatus="status">
           <tr>
             <th scope="row">${status.index + 1}</th>
+            <td><a href="/book/${book.ISBN}"> ${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.ISBN}</td>
             <td>
-                <form class="form-inline" action="/user/edit/${user.name}" method="post">
-                 <label class="sr-only" for="inlineFormInputName2">Name</label>
-                 <input type="text" class="form-control mb-2 mr-sm-2" id="name" name="username" value=${user.name}>
-                 <input type="text" class="form-control mb-2 mr-sm-2" id="gmail" name="gmail" value=${user.gmail}>
-                 <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
-                 <button type="submit" class="btn btn-primary mb-2 me-2">Edit</button>
-                 <a href="/user/delete/${user.name}" class="btn btn-primary mb-2 me-2">Delete</a>
-               </form>
-            </td>
+            <c:choose>
+                <c:when test="${book.owner == sessionScope.userId}">
+                    <form action="/book/return/${book.ISBN}" method="POST">
+                                                            <button type="submit" class="btn btn-link">return</button>
+                                                        </form>
+                </c:when>
+                <c:when test="${book.dueDate == null and book.owner != sessionScope.userId}">
+                    <form action="/book/borrow/${book.ISBN}" method="POST">
+                        <button type="submit" class="btn btn-link">borrow</button>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <p>not available until ${book.dueDate}</p>
+                </c:otherwise>
+            </c:choose>
+           </td>
           </tr>
         </c:forEach>
       </tbody>

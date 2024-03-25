@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
+import static com.example.Fakeapp.func.CalcDate.today;
+
 @Controller
 public class RootController {
     @Autowired
@@ -67,14 +69,12 @@ public class RootController {
                                  @RequestParam("username") String newUsername,
                                  @RequestParam("gmail") String gmail) {
 
-        System.out.println("in this route");
+
         User user = userDao.findByUsername(username);
         user.setName(newUsername);
         user.setGmail(gmail);
         userDao.edit(username, user);
 
-        System.out.println(username);
-        System.out.println(gmail);
 
         return "redirect:/root/users"; // Redirect to a list of users after editing
     }
@@ -143,4 +143,12 @@ public class RootController {
 
         return res;
     }
+    @GetMapping("/root/overdue/books")
+    public ModelAndView getOverdueBooks(){
+        ArrayList<Book> overdueBooks = bookManagerDao.getOverdueBooks(today());
+        ModelAndView ret = new ModelAndView("root/books");
+        ret.addObject("books", overdueBooks);
+        return new ModelAndView("root/books");
+    }
+
 }
