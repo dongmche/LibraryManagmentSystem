@@ -1,5 +1,6 @@
 package com.example.Fakeapp.controller;
 
+import com.example.Fakeapp.Service.EmailService;
 import com.example.Fakeapp.dao.ReportManager.Report;
 import com.example.Fakeapp.dao.ReportManager.ReportManagerDao;
 import com.example.Fakeapp.dao.UserManager.User;
@@ -16,11 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-
-import static com.example.Fakeapp.func.CalcDate.today;
+import java.util.concurrent.ExecutorService;
 
 @Controller
 public class RootController {
+
+    private static final String GMAIL_SHOULD_RETURN_BOOK_TEXT = "please return a borrowed book";
+    private static final String GMAIL_SHOULD_RETURN_BOOK_SUBJECT = "unreturned book";
     @Autowired
     private UserDao userDao;
     @Autowired
@@ -28,6 +31,12 @@ public class RootController {
 
     @Autowired
     private ReportManagerDao reportManagerDao;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private ExecutorService taskExecutor;
 
     @GetMapping("/root/login")
     public ModelAndView longInRoot(){
@@ -154,13 +163,11 @@ public class RootController {
     public ModelAndView getOverdueBooks(){
 
         // must change this one
-        ArrayList<Book> overdueBooks = bookManagerDao.getAll();
-
-
+//        ArrayList<Report> reports = reportManagerDao.getAll();
+        ArrayList<Book>items = bookManagerDao.getAll();
         ModelAndView ret = new ModelAndView("root/books");
-        ret.addObject("books", overdueBooks);
-
-        return new ModelAndView("root/books");
+        ret.addObject("items", items);
+        return ret;
     }
 
     @GetMapping("/root/search/user")
@@ -179,5 +186,14 @@ public class RootController {
         ModelAndView ret = new ModelAndView("root/reports");
         ret.addObject("reports", reports);
         return ret;
+    }
+    @GetMapping("/root/notify/{ownerId}")
+    public ModelAndView notifyOwner(@PathVariable("ownerId") Long ownerId) {
+        taskExecutor.execute(() -> {
+            User user = userDao.findById(ownerId);
+            emailService.sendMessage(user.getGmail(), GMAIL_SHOULD_RETURN_BOOK_SUBJECT, GMAIL_SHOULD_RETURN_BOOK_TEXT);
+        });
+
+        return new ModelAndView("redirect:/root/overdue/books");
     }
 }
