@@ -3,7 +3,7 @@ package com.example.Fakeapp.func;
 import java.util.Calendar;
 
 public class CalcDate {
-    public static java.sql.Date calcDueDate(){
+    public static java.sql.Date calcReturnDate(){
         java.util.Date utilDate = new java.util.Date(); // This captures the current date and time
 
         Calendar calendar = Calendar.getInstance();

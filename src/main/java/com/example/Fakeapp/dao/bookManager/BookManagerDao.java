@@ -25,5 +25,6 @@ public interface BookManagerDao {
     // primarily used for tests
     public boolean available(Long isbn);
 
+    public ArrayList<Book> getOverdueBooks(Date date);
 
 }

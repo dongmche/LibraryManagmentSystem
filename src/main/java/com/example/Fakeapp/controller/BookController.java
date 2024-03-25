@@ -19,7 +19,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import static com.example.Fakeapp.func.CalcDate.calcDueDate;
+import static com.example.Fakeapp.func.CalcDate.calcReturnDate;
 import static com.example.Fakeapp.func.CalcDate.today;
 
 
@@ -70,11 +70,11 @@ public class BookController {
 
 
         //borrow book
-        bookManagerDao.borrowBook(ISBN, (Long) session.getAttribute("userId"), calcDueDate());
+        bookManagerDao.borrowBook(ISBN, (Long) session.getAttribute("userId"), calcReturnDate());
 
 
         // report that book is borrowed
-        Date today = CalcDate.calcDueDate();
+        Date today = CalcDate.calcReturnDate();
         Report report = new Report(isbn, today, Status.BORROWED);
         reportManagerDao.report(report);
 

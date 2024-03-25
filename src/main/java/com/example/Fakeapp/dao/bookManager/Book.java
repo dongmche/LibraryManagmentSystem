@@ -71,7 +71,7 @@ public class Book {
                 Objects.equals(genre, book.genre);
     }
 
-    public Date getDueDate() {
+    public java.sql.Date getDueDate() {
         return dueDate;
     }
 

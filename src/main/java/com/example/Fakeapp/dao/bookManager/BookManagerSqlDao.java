@@ -344,4 +344,42 @@ public class BookManagerSqlDao implements BookManagerDao {
         }
         return true;
     }
+
+    @Override
+    public ArrayList<Book> getOverdueBooks(Date date) {
+        ArrayList<Book> books = new ArrayList<>(); // Array to hold Book objects
+
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+
+            String query = "SELECT * FROM books WHERE dueDate < ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+
+            // Set the parameters to include the '%' wildcard for partial matches
+            pstmt.setDate(1, date);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String title = rs.getString("title");
+                    String author = rs.getString("author");
+                    Long ISBN = rs.getLong("ISBN");
+                    String genre = rs.getString("genre");
+
+
+                    Book book = new Book(title, author, ISBN, genre);
+
+                    Date dueDate = rs.getDate("dueDate");
+                    if (dueDate != null) {
+                        book.setDueDate(rs.getDate("dueDate"));
+                    }
+                    book.setOwner(rs.getLong("owner"));
+                    books.add(book);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return books;
+    }
 }

@@ -9,9 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import static com.example.Fakeapp.func.CalcDate.calcReturnDate;
+import static com.example.Fakeapp.func.CalcDate.today;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TestBookManager {
@@ -178,8 +181,6 @@ public class TestBookManager {
         java.util.Date utilDate = new java.util.Date(); // This captures the current date and time
         java.sql.Date dueDate = new java.sql.Date(utilDate.getTime());
 
-
-
         assert false == bookManager.available(bookOne.getISBN());
         assert false == bookManager.available(bookTwo.getISBN());
         assert false == bookManager.available(bookThird.getISBN());
@@ -208,5 +209,41 @@ public class TestBookManager {
         assert false == bookManager.available(bookFourth.getISBN());
 
     }
+    @Test
+    public void testOverdueBooks(){
+        String author = "Nicholas Sparks";
+        BookManagerDao bookManager = new BookManagerSqlDao();
+
+        Book bookOne = new Book("foo", author, 123443442L, "dsa");
+        assert  true == bookManager.add(bookOne);
+        Book bookTwo = new Book("foo", author, 12344343242L, "dsa");
+        assert  true ==bookManager.add(bookTwo);
+        Book bookThird = new Book("foo", author, 12344344223L, "dsa");
+        assert  true ==bookManager.add(bookThird);
+        Book bookFourth = new Book("foo", author, 12344344224L, "dsas");
+        assert  true == bookManager.add(bookFourth);
+
+        Long owner = 2L;
+        Date dueDate = today();
+
+        bookOne.setDueDate(dueDate);
+        bookTwo.setDueDate(dueDate);
+        bookThird.setDueDate(dueDate);
+        bookFourth.setDueDate(dueDate);
+
+        bookOne.setOwner(owner);
+        bookTwo.setOwner(owner);
+        bookThird.setOwner(owner);
+        bookFourth.setOwner(owner);
+
+        assert true == bookManager.borrowBook(bookOne.getISBN(),bookOne.getISBN(), bookOne.getDueDate());
+        assert true == bookManager.borrowBook(bookTwo.getISBN(),bookOne.getISBN(), bookOne.getDueDate());
+        assert true == bookManager.borrowBook(bookThird.getISBN(),bookOne.getISBN(), bookOne.getDueDate());
+        assert true == bookManager.borrowBook(bookFourth.getISBN(),bookOne.getISBN(), bookOne.getDueDate());
+
+        ArrayList<Book> books = bookManager.getOverdueBooks(calcReturnDate());
+        assert books.size() == 4;
+
+}
 
 }

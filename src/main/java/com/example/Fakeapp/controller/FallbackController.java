@@ -14,7 +14,7 @@ public class FallbackController {
     @RequestMapping("/**")
     public String fallback( HttpSession session) {
         if (session.getAttribute("userId") != null){
-            if (UNPRIVILEGED_USERS_STARTING_ID > (long) session.getAttribute("userId")){
+            if (UNPRIVILEGED_USERS_STARTING_ID >= (long) session.getAttribute("userId")){
                 return "redirect:/root/users";
             }else {
                 return "redirect:/books";
